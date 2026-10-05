@@ -1,0 +1,48 @@
+<section class="card subscription-card">
+  <header class="subscription-header">
+    <div>
+      <span class="subscription-eyebrow">Tu suscripción</span>
+      <h3>{{ plan()?.name ?? 'Plan no disponible' }}</h3>
+    </div>
+    <span class="badge" [class]="statusBadge()">{{ statusLabel() }}</span>
+  </header>
+
+  <dl class="subscription-details">
+    <div>
+      <dt>Precio</dt>
+      <dd>
+        @if (plan(); as plan) {
+          {{ plan.formattedPrice() }}/mes
+        } @else {
+          —
+        }
+      </dd>
+    </div>
+    <div>
+      <dt>Fecha de renovación</dt>
+      <dd>{{ renewalDateLabel() }}</dd>
+    </div>
+    <div>
+      <dt>Días restantes</dt>
+      <dd>{{ daysLeftLabel() }}</dd>
+    </div>
+    <div>
+      <dt>Método de pago</dt>
+      <dd>{{ paymentMethodLabel() }}</dd>
+    </div>
+  </dl>
+
+  <div class="subscription-actions">
+    <button type="button" class="btn btn-primary" [disabled]="processing()" (click)="renew.emit()">
+      Renovar
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      [disabled]="processing() || cancelled()"
+      (click)="cancelSubscription.emit()"
+    >
+      Cancelar suscripción
+    </button>
+  </div>
+</section>
