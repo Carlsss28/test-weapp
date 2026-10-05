@@ -1,0 +1,20 @@
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.plans-error {
+  margin-bottom: 1rem;
+}
+
+.plans-loading-hint {
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+}
