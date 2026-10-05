@@ -7,7 +7,11 @@
     </p>
   </div>
   @if (store.currentPlan(); as currentPlan) {
-    <span class="badge badge-success">Plan activo: {{ currentPlan.name }}</span>
+    @if (store.currentSubscription()?.isActive()) {
+      <span class="badge badge-success">Plan activo: {{ currentPlan.name }}</span>
+    } @else {
+      <span class="badge badge-muted">Sin plan activo</span>
+    }
   }
 </div>
 
