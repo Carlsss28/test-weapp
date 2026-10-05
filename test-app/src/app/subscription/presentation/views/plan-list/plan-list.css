@@ -4,6 +4,10 @@
   gap: 1.25rem;
 }
 
+.current-subscription {
+  margin-bottom: 1.5rem;
+}
+
 .plans-error {
   margin-bottom: 1rem;
 }
