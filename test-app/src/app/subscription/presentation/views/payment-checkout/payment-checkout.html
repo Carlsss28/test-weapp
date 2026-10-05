@@ -1,0 +1,74 @@
+<div class="page-header">
+  <div>
+    <h1>Confirmar pago</h1>
+    <p>Revisa tu plan y elige cómo pagar. Pago simulado — no se procesan cobros reales.</p>
+  </div>
+</div>
+
+@if (plan(); as plan) {
+  <section class="card checkout-card">
+    <h3>Resumen del plan</h3>
+
+    <div class="checkout-summary">
+      <span class="checkout-plan-name">{{ plan.name }}</span>
+      <span class="checkout-price">
+        <span class="amount">{{ plan.formattedPrice() }}</span>
+        <span class="period">/mes</span>
+      </span>
+    </div>
+
+    <ul class="checkout-features">
+      @for (feature of plan.features; track feature) {
+        <li>{{ feature }}</li>
+      }
+    </ul>
+
+    <fieldset class="checkout-methods">
+      <legend>Método de pago</legend>
+      @for (method of paymentMethods; track method.value) {
+        <label class="checkout-method" [class.selected]="paymentMethod() === method.value">
+          <input
+            type="radio"
+            name="paymentMethod"
+            [value]="method.value"
+            [checked]="paymentMethod() === method.value"
+            [disabled]="store.processing()"
+            (change)="paymentMethod.set(method.value)"
+          />
+          <span>
+            <span class="checkout-method-name">{{ method.label }}</span>
+            <span class="checkout-method-description">{{ method.description }}</span>
+          </span>
+        </label>
+      }
+    </fieldset>
+
+    @if (store.error(); as error) {
+      <p class="form-error" role="alert">{{ error }}</p>
+    }
+
+    <div class="checkout-actions">
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="store.processing()"
+        (click)="confirm()"
+      >
+        {{ store.processing() ? 'Procesando…' : 'Confirmar pago' }}
+      </button>
+      <a class="btn btn-ghost" [routerLink]="planListRoute">Volver</a>
+    </div>
+  </section>
+} @else if (store.loading()) {
+  <div class="card empty-state checkout-card">
+    <p>Cargando plan…</p>
+    <p class="checkout-loading-hint">
+      La primera carga puede tardar hasta un minuto mientras el servidor se activa.
+    </p>
+  </div>
+} @else {
+  <div class="card empty-state checkout-card">
+    <p>{{ store.error() ?? 'No encontramos el plan que quieres pagar.' }}</p>
+    <a class="btn btn-secondary" [routerLink]="planListRoute">Volver a los planes</a>
+  </div>
+}
