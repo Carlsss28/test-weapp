@@ -3,6 +3,7 @@ import { SubscriptionStore } from '../../../application/subscription.store';
 import { PaymentMethod } from '../../../domain/model/payment-method';
 import { Plan } from '../../../domain/model/plan.entity';
 import { SubscribeToPlanCommand } from '../../../domain/model/subscribe-to-plan.command';
+import { CurrentSubscriptionCard } from '../../components/current-subscription-card/current-subscription-card';
 import { PlanCard } from '../../components/plan-card/plan-card';
 
 /** Time the confirmation badge stays visible, in milliseconds. */
@@ -14,7 +15,7 @@ const CONFIRMATION_DURATION_MS = 2500;
  */
 @Component({
   selector: 'app-plan-list',
-  imports: [PlanCard],
+  imports: [CurrentSubscriptionCard, PlanCard],
   templateUrl: './plan-list.html',
   styleUrl: './plan-list.css',
 })
@@ -62,6 +63,16 @@ export class PlanList implements OnInit {
       () => this.confirmedPlanId.set(null),
       CONFIRMATION_DURATION_MS,
     );
+  }
+
+  /** Renews the current subscription for one more billing period. */
+  protected renew(): void {
+    this.store.renewSubscription();
+  }
+
+  /** Cancels the current subscription. */
+  protected cancel(): void {
+    this.store.cancelSubscription();
   }
 
   /** Cancels the pending confirmation timer, if any. */
