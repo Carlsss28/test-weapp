@@ -1,0 +1,71 @@
+:host {
+  display: block;
+}
+
+.plan-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.plan-highlighted {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-md);
+}
+
+.plan-tag {
+  position: absolute;
+  top: -10px;
+  right: 1rem;
+}
+
+.plan-price {
+  margin: 0.5rem 0 1rem;
+}
+
+.plan-price .amount {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+}
+
+.plan-price .period {
+  color: var(--color-muted);
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.plan-features li {
+  font-size: 0.88rem;
+  color: var(--color-text);
+  padding-left: 1.3rem;
+  position: relative;
+}
+
+.plan-features li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+  color: var(--color-success);
+  font-weight: 800;
+}
+
+.plan-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.plan-confirmation {
+  justify-content: center;
+  margin: 0;
+}
