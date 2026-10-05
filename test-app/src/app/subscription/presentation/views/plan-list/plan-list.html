@@ -1,0 +1,41 @@
+<div class="page-header">
+  <div>
+    <h1>Planes y suscripción</h1>
+    <p>
+      Paga o renueva tu suscripción con Stripe o PayPal. Pago simulado — no se procesan cobros
+      reales.
+    </p>
+  </div>
+  @if (store.currentPlan(); as currentPlan) {
+    <span class="badge badge-success">Plan activo: {{ currentPlan.name }}</span>
+  }
+</div>
+
+@if (store.error(); as error) {
+  <p class="form-error plans-error" role="alert">{{ error }}</p>
+}
+
+@if (store.loading() && store.plans().length === 0) {
+  <div class="card empty-state">
+    <p>Cargando planes…</p>
+    <p class="plans-loading-hint">
+      La primera carga puede tardar hasta un minuto mientras el servidor se activa.
+    </p>
+  </div>
+} @else if (store.plans().length === 0) {
+  <div class="card empty-state">
+    <p>No hay planes disponibles por el momento.</p>
+  </div>
+} @else {
+  <div class="plans-grid">
+    @for (plan of store.plans(); track plan.id) {
+      <app-plan-card
+        [plan]="plan"
+        [processing]="processingPlanId() === plan.id"
+        [disabled]="store.processing()"
+        [confirmed]="confirmedPlanId() === plan.id"
+        (pay)="choose(plan, $event)"
+      />
+    }
+  </div>
+}
