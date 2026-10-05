@@ -5,9 +5,11 @@ import { SubscriptionResource, SubscriptionsResponse } from './subscriptions-res
 /**
  * Converts between {@link Subscription} entities and {@link SubscriptionResource} resources.
  */
-export class SubscriptionAssembler
-  implements BaseAssembler<Subscription, SubscriptionResource, SubscriptionsResponse>
-{
+export class SubscriptionAssembler implements BaseAssembler<
+  Subscription,
+  SubscriptionResource,
+  SubscriptionsResponse
+> {
   /**
    * Converts a subscription resource into a subscription entity.
    * @param resource - Resource received from the API.
