@@ -20,6 +20,9 @@ export class SubscriptionStore {
   private readonly processingSignal = signal(false);
   private readonly errorSignal = signal<string | null>(null);
 
+  /** Whether the subscriptions have been loaded at least once. */
+  private subscriptionsLoaded = false;
+
   /** Catalog of plans. */
   readonly plans = this.plansSignal.asReadonly();
   /** Subscriptions returned by the API. */
@@ -62,16 +65,24 @@ export class SubscriptionStore {
       this.subscriptionService.getSubscriptions(),
       'No se pudo cargar la suscripción',
     );
-    if (subscriptions) this.subscriptionsSignal.set(subscriptions);
+    if (subscriptions) {
+      this.subscriptionsSignal.set(subscriptions);
+      this.subscriptionsLoaded = true;
+    }
   }
 
   /**
    * Subscribes the restaurant to a plan with a simulated payment.
    * Updates the current subscription when there is one; creates it otherwise.
+   * The subscriptions are loaded first when needed, so an existing subscription
+   * is never duplicated.
    * @param command - Plan and payment method chosen by the user.
    * @returns `true` when the subscription was saved.
    */
-  subscribeToPlan(command: SubscribeToPlanCommand): Promise<boolean> {
+  async subscribeToPlan(command: SubscribeToPlanCommand): Promise<boolean> {
+    if (!this.subscriptionsLoaded) await this.loadCurrentSubscription();
+    if (!this.subscriptionsLoaded) return false;
+
     const current = this.currentSubscription();
     const subscription = new Subscription({
       id: current?.id ?? 0,
